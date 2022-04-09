@@ -53,7 +53,7 @@ bool Image::savePPM(string filename) {
     std::ofstream ofs;
     ofs.open(filename, std::ios::binary);
 
-    if (ofs.fail()) { return false;}
+    if (ofs.fail()) { return false; }
 
     ofs << "P6\n" << this->w << " " << this->h << "\n255\n";
 
@@ -86,23 +86,70 @@ void Image::filterBlue() {
 }
 
 void Image::greyScale() {
-    for (int c = 0; c < w * h; c++) {
-        int greyscale = (0.2126 * this->pixels[c].r + 0.7152 * this->pixels[c].g + 0.0722 * this->pixels[c].b);
+    for (int i = 0; i < w * h; i++) {
+        int greyscale = (0.2126 * this->pixels[i].r + 0.7152 * this->pixels[i].g + 0.0722 * this->pixels[i].b);
 
-        this->pixels[c].b = greyscale;
-        this->pixels[c].g = greyscale;
-        this->pixels[c].r = greyscale;
+        this->pixels[i].b = greyscale;
+        this->pixels[i].g = greyscale;
+        this->pixels[i].r = greyscale;
     }
 }
 
 void Image::flipHorizontal() {
 
+    int px1;
+    int px2;
+    int tempPixel[3];
+
+    for (int y = 0; y < this->h; ++y) {
+        for (int x = 0; x < this->w / 2; ++x) {
+
+            px1 = x + y * w;
+            px2 = (w - 1 - x) + y * w;
+
+            tempPixel[0] = this->pixels[px1].r;
+            tempPixel[1] = this->pixels[px1].g;
+            tempPixel[2] = this->pixels[px1].b;
+
+            this->pixels[px1].r = this->pixels[px2].r;
+            this->pixels[px1].g = this->pixels[px2].g;
+            this->pixels[px1].b = this->pixels[px2].b;
+
+            this->pixels[px2].r = tempPixel[0];
+            this->pixels[px2].g = tempPixel[1];
+            this->pixels[px2].b = tempPixel[2];
+
+        }
+    }
 
 }
 
 void Image::flipVertically() {
 
+    int px1;
+    int px2;
+    int tempPixel[3];
 
+    for (int x = 0; x < this->w; ++x) {
+        for (int y = 0; y < this->h / 2; ++y) {
+
+            px1 = x + y * w;
+            px2 = x + (h - 1 - y) * w;
+
+            tempPixel[0] = this->pixels[px1].r;
+            tempPixel[1] = this->pixels[px1].g;
+            tempPixel[2] = this->pixels[px1].b;
+
+            this->pixels[px1].r = this->pixels[px2].r;
+            this->pixels[px1].g = this->pixels[px2].g;
+            this->pixels[px1].b = this->pixels[px2].b;
+
+            this->pixels[px2].r = tempPixel[0];
+            this->pixels[px2].g = tempPixel[1];
+            this->pixels[px2].b = tempPixel[2];
+
+        }
+    }
 }
 
 void Image::AdditionalFunction2() {
