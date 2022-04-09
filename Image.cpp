@@ -176,6 +176,14 @@ void Image::AdditionalFunction3() {
 
 void Image::AdditionalFunction1() {
 
+    //Invert pixels
+
+    for (int i = 0; i < w*h; ++i) {
+        pixels[i].r = 255 - pixels[i].r;
+        pixels[i].g = 255 - pixels[i].g;
+        pixels[i].b = 255 - pixels[i].b;
+    }
+
 }
 
 /* Functions used by the GUI - DO NOT MODIFY */
