@@ -55,14 +55,14 @@ bool Image::savePPM(string filename) {
 
     if (ofs.fail()) { return false; }
 
-    ofs << "P6\n" << this->w << " " << this->h << "\n255\n";
+    ofs << "P6\n" << w << " " << h << "\n255\n";
 
     unsigned char r, g, b;
 
-    for (int i = 0; i < this->w * this->h; ++i) {
-        r = this->pixels[i].r;
-        g = this->pixels[i].g;
-        b = this->pixels[i].b;
+    for (int i = 0; i < w * h; ++i) {
+        r = pixels[i].r;
+        g = pixels[i].g;
+        b = pixels[i].b;
 
         ofs << r << g << b;
     }
@@ -75,23 +75,37 @@ bool Image::savePPM(string filename) {
 
 void Image::filterRed() {
 
+    for (int i = 0; i < w*h; ++i) {
+        pixels[i].b=0;
+        pixels[i].g=0;
+    }
 }
 
 void Image::filterGreen() {
+
+    for (int i = 0; i < w*h; ++i) {
+        pixels[i].b=0;
+        pixels[i].r=0;
+    }
 
 }
 
 void Image::filterBlue() {
 
+    for (int i = 0; i < w*h; ++i) {
+        pixels[i].r=0;
+        pixels[i].g=0;
+    }
+
 }
 
 void Image::greyScale() {
     for (int i = 0; i < w * h; i++) {
-        int greyscale = (0.2126 * this->pixels[i].r + 0.7152 * this->pixels[i].g + 0.0722 * this->pixels[i].b);
+        int greyscale = (0.2126 * pixels[i].r + 0.7152 * pixels[i].g + 0.0722 * pixels[i].b);
 
-        this->pixels[i].b = greyscale;
-        this->pixels[i].g = greyscale;
-        this->pixels[i].r = greyscale;
+        pixels[i].b = greyscale;
+        pixels[i].g = greyscale;
+        pixels[i].r = greyscale;
     }
 }
 
@@ -101,23 +115,23 @@ void Image::flipHorizontal() {
     int px2;
     int tempPixel[3];
 
-    for (int y = 0; y < this->h; ++y) {
-        for (int x = 0; x < this->w / 2; ++x) {
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w / 2; ++x) {
 
             px1 = x + y * w;
             px2 = (w - 1 - x) + y * w;
 
-            tempPixel[0] = this->pixels[px1].r;
-            tempPixel[1] = this->pixels[px1].g;
-            tempPixel[2] = this->pixels[px1].b;
+            tempPixel[0] = pixels[px1].r;
+            tempPixel[1] = pixels[px1].g;
+            tempPixel[2] = pixels[px1].b;
 
-            this->pixels[px1].r = this->pixels[px2].r;
-            this->pixels[px1].g = this->pixels[px2].g;
-            this->pixels[px1].b = this->pixels[px2].b;
+            pixels[px1].r = pixels[px2].r;
+            pixels[px1].g = pixels[px2].g;
+            pixels[px1].b = pixels[px2].b;
 
-            this->pixels[px2].r = tempPixel[0];
-            this->pixels[px2].g = tempPixel[1];
-            this->pixels[px2].b = tempPixel[2];
+            pixels[px2].r = tempPixel[0];
+            pixels[px2].g = tempPixel[1];
+            pixels[px2].b = tempPixel[2];
 
         }
     }
@@ -130,23 +144,23 @@ void Image::flipVertically() {
     int px2;
     int tempPixel[3];
 
-    for (int x = 0; x < this->w; ++x) {
-        for (int y = 0; y < this->h / 2; ++y) {
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h / 2; ++y) {
 
             px1 = x + y * w;
             px2 = x + (h - 1 - y) * w;
 
-            tempPixel[0] = this->pixels[px1].r;
-            tempPixel[1] = this->pixels[px1].g;
-            tempPixel[2] = this->pixels[px1].b;
+            tempPixel[0] = pixels[px1].r;
+            tempPixel[1] = pixels[px1].g;
+            tempPixel[2] = pixels[px1].b;
 
-            this->pixels[px1].r = this->pixels[px2].r;
-            this->pixels[px1].g = this->pixels[px2].g;
-            this->pixels[px1].b = this->pixels[px2].b;
+            pixels[px1].r = pixels[px2].r;
+            pixels[px1].g = pixels[px2].g;
+            pixels[px1].b = pixels[px2].b;
 
-            this->pixels[px2].r = tempPixel[0];
-            this->pixels[px2].g = tempPixel[1];
-            this->pixels[px2].b = tempPixel[2];
+            pixels[px2].r = tempPixel[0];
+            pixels[px2].g = tempPixel[1];
+            pixels[px2].b = tempPixel[2];
 
         }
     }
