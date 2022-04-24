@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <cstring>
 #include "Image.h"
+#include "cmath"
 
 
 bool Image::load(string filename) {
@@ -168,9 +169,27 @@ void Image::flipVertically() {
 
 void Image::AdditionalFunction2() {
 
+    for (int i = 0; i < w*h; ++i) {
+        pixels[i].r = pixels[i].r /4  ;
+        pixels[i].g = pixels[i].g /4 ;
+        pixels[i].b = pixels[i].b/4;
+    }
+
 }
 
 void Image::AdditionalFunction3() {
+
+    for (int i = 0; i < w * h; i++) {
+        double saturation = 0.5;
+
+        double p = sqrt((pixels[i].r) * (pixels[i].r) * .299 +
+                        (pixels[i].g) * (pixels[i].g) * .587 +
+                        (pixels[i].b) * (pixels[i].b) * .114);
+
+        pixels[i].b = p + ((pixels[i].b) - p) * saturation;
+        pixels[i].g = p + ((pixels[i].g) - p) * saturation;
+        pixels[i].r = p + ((pixels[i].r) - p) * saturation;
+    }
 
 }
 
