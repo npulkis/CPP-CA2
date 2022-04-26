@@ -45,7 +45,23 @@ bool Image::load(string filename) {
 }
 
 bool Image::loadRaw(string filename) {
+    ifstream in(filename);
+    if(in.good())
+    {
+        in >> w;
+        in >> h;
 
+        for(int i = 0; i < w*h; i++)
+        {
+            float r, g, b;
+            in >> r >>g>>b;
+            this->pixels[i].r = (unsigned char)(std::max(0.f, min(255.f, powf(r, 1/2.2) * 255 + 0.5f)));
+            this->pixels[i].g = (unsigned char)(std::max(0.f, min(255.f, powf(g, 1/2.2) * 255 + 0.5f)));
+            this->pixels[i].b = (unsigned char)(std::max(0.f, min(255.f, powf(b, 1/2.2) * 255 + 0.5f)));
+        }
+        in.close();
+        return true;
+    }
 
     return false;
 }
@@ -169,16 +185,18 @@ void Image::flipVertically() {
 
 void Image::AdditionalFunction2() {
 
+    //Change brightness
     for (int i = 0; i < w*h; ++i) {
-        pixels[i].r = pixels[i].r /4  ;
-        pixels[i].g = pixels[i].g /4 ;
-        pixels[i].b = pixels[i].b/4;
+        pixels[i].r = pixels[i].r * 0.5  ;
+        pixels[i].g = pixels[i].g * 0.5 ;
+        pixels[i].b = pixels[i].b * 0.5;
     }
 
 }
 
 void Image::AdditionalFunction3() {
 
+    //Change saturation
     for (int i = 0; i < w * h; i++) {
         double saturation = 0.5;
 
@@ -202,6 +220,14 @@ void Image::AdditionalFunction1() {
         pixels[i].g = 255 - pixels[i].g;
         pixels[i].b = 255 - pixels[i].b;
     }
+
+}
+
+void Image::GammaEncoding(){
+
+}
+
+void Image::OtherAdvancedFeature() {
 
 }
 
