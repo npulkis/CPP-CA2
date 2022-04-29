@@ -2,8 +2,6 @@
 // Created by floodd on 23/03/2022.
 //
 #include <iostream>
-#include <fstream>
-#include <iomanip>
 #include <cstring>
 #include "Image.h"
 #include "cmath"
@@ -46,23 +44,20 @@ bool Image::load(string filename) {
 
 bool Image::loadRaw(string filename) {
     ifstream in(filename);
-    if(in.good())
-    {
+    if (in.good()) {
         in >> w;
         in >> h;
 
-        for(int i = 0; i < w*h; i++)
-        {
+        for (int i = 0; i < w * h; i++) {
             float r, g, b;
-            in >> r >>g>>b;
-            this->pixels[i].r = (unsigned char)(std::max(0.f, min(255.f, powf(r, 1/2.2) * 255 + 0.5f)));
-            this->pixels[i].g = (unsigned char)(std::max(0.f, min(255.f, powf(g, 1/2.2) * 255 + 0.5f)));
-            this->pixels[i].b = (unsigned char)(std::max(0.f, min(255.f, powf(b, 1/2.2) * 255 + 0.5f)));
+            in >> r >> g >> b;
+            this->pixels[i].r = (unsigned char) (std::max(0.f, min(255.f, powf(r, 1 / 2.2) * 255 + 0.5f)));
+            this->pixels[i].g = (unsigned char) (std::max(0.f, min(255.f, powf(g, 1 / 2.2) * 255 + 0.5f)));
+            this->pixels[i].b = (unsigned char) (std::max(0.f, min(255.f, powf(b, 1 / 2.2) * 255 + 0.5f)));
         }
         in.close();
         return true;
     }
-
     return false;
 }
 
@@ -88,6 +83,7 @@ bool Image::savePPM(string filename) {
 
     return true;
 }
+
 
 
 void Image::filterRed() {
@@ -223,12 +219,28 @@ void Image::AdditionalFunction1() {
 
 }
 
-void Image::GammaEncoding(){
-
-}
 
 void Image::OtherAdvancedFeature() {
+    //mean filter
+    for(int x = 0; x < h; ++x){
+        for(int y = 0; y < w; ++y){
 
+            int red =0 ,green = 0,blue = 0;
+
+            for(int i = -1; i <= 1; ++i){
+                for(int j = -1; j <= 1; ++j){
+                    if(x + i >= 0 && x + i < h && y + j >= 0 && y + j < w){
+                        red += pixels[(x + i) * w + (y + j)].r;
+                        green += pixels[(x + i) * w + (y + j)].g;
+                        blue += pixels[(x + i) * w + (y + j)].b;
+                    }
+                }
+            }
+            pixels[x * w + y].r = red /9;
+            pixels[x * w + y].g = green/9;
+            pixels[x * w + y].b = blue/9;
+        }
+    }
 }
 
 /* Functions used by the GUI - DO NOT MODIFY */
